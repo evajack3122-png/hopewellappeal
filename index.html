@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HopeWell Foundation — Every Patient Deserves a Chance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-deep: #0d3b4c;
+            --teal-mid: #1b5a6b;
+            --teal-light: #2e7d8a;
+            --coral: #e07c5a;
+            --coral-light: #f4a68a;
+            --coral-pale: #fdf0ea;
+            --cream: #fafaf8;
+            --cream-warm: #f6f3ef;
+            --stone: #e2ded5;
+            --charcoal: #2c2a28;
+            --charcoal-light: #6b6762;
+            --white: #ffffff;
+            --error: #c44d4d;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
+            --shadow-lg: 0 16px 40px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            --shadow-xl: 0 24px 56px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.05);
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+            --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; font-size: 16px; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Abstract background shapes */
+        .bg-shape {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.06;
+        }
+        .bg-shape--1 { width: 700px; height: 700px; background: var(--teal-mid); top: -250px; right: -200px; }
+        .bg-shape--2 { width: 500px; height: 500px; background: var(--coral); bottom: -180px; left: -150px; opacity: 0.05; }
+        .bg-shape--3 { width: 400px; height: 400px; background: var(--teal-light); top: 50%; left: 30%; opacity: 0.04; filter: blur(140px); }
+
+        /* Navigation */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 14px 0; transition: all var(--transition-smooth);
+            background: transparent;
+        }
+        .nav--scrolled {
+            background: rgba(250,250,248,0.88);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            padding: 10px 0; box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .nav__inner {
+            max-width: 1280px; margin: 0 auto; padding: 0 32px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav__logo {
+            font-family: var(--font-display);
+            font-size: 1.55rem; font-weight: 600; color: var(--teal-deep);
+            letter-spacing: -0.3px; text-decoration: none; display: flex; align-items: center; gap: 10px;
+            z-index: 1001;
+        }
+        .nav__logo-icon {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: var(--teal-deep); display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .nav__links { display: flex; align-items: center; gap: 34px; list-style: none; }
+        .nav__link {
+            text-decoration: none; color: var(--charcoal-light); font-size: 0.88rem;
+            font-weight: 500; letter-spacing: 0.2px; transition: color var(--transition-fast);
+            position: relative;
+        }
+        .nav__link::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0; height: 2px; background: var(--coral); border-radius: 2px;
+            transition: width var(--transition-smooth);
+        }
+        .nav__link:hover { color: var(--charcoal); }
+        .nav__link:hover::after { width: 100%; }
+        .nav__cta {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 24px; background: var(--coral); color: #fff;
+            border-radius: 50px; font-weight: 600; font-size: 0.88rem;
+            text-decoration: none; letter-spacing: 0.3px; transition: all var(--transition-smooth);
+            white-space: nowrap; box-shadow: 0 3px 10px rgba(224,124,90,0.25);
+        }
+        .nav__cta:hover { background: #c96948; box-shadow: 0 6px 20px rgba(224,124,90,0.4); transform: translateY(-1px); }
+        .nav__cta:active { transform: scale(0.97); }
+
+        /* Hamburger */
+        .nav__hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            background: none; border: none; padding: 8px; z-index: 1001;
+        }
+        .nav__hamburger span {
+            display: block; width: 26px; height: 2px; background: var(--teal-deep);
+            border-radius: 2px; transition: all var(--transition-smooth);
+        }
+        .nav__hamburger--active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .nav__hamburger--active span:nth-child(2) { opacity: 0; }
+        .nav__hamburger--active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; inset: 0; z-index: 999; background: rgba(250,250,248,0.97);
+            backdrop-filter: blur(20px); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 28px;
+            opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth);
+        }
+        .mobile-menu--open { opacity: 1; pointer-events: all; }
+        .mobile-menu__link {
+            font-family: var(--font-display); font-size: 1.8rem; color: var(--teal-deep);
+            text-decoration: none; font-weight: 500; letter-spacing: -0.5px;
+            transform: translateY(12px); opacity: 0; transition: all var(--transition-smooth);
+        }
+        .mobile-menu--open .mobile-menu__link { transform: translateY(0); opacity: 1; }
+        .mobile-menu__link:nth-child(1) { transition-delay: 50ms; }
+        .mobile-menu__link:nth-child(2) { transition-delay: 100ms; }
+        .mobile-menu__link:nth-child(3) { transition-delay: 150ms; }
+        .mobile-menu__link:nth-child(4) { transition-delay: 200ms; }
+        .mobile-menu__link:nth-child(5) { transition-delay: 250ms; }
+        .mobile-menu__cta {
+            margin-top: 10px; padding: 14px 36px; background: var(--coral);
+            color: #fff; border-radius: 50px; font-weight: 600; font-size: 1rem;
+            text-decoration: none; transform: translateY(12px); opacity: 0;
+            transition: all var(--transition-smooth); transition-delay: 300ms;
+        }
+        .mobile-menu--open .mobile-menu__cta { transform: translateY(0); opacity: 1; }
+
+        /* Hero */
+        .hero {
+            position: relative; z-index: 1; padding: 130px 32px 80px;
+            max-width: 1280px; margin: 0 auto; display: grid;
+            grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;
+            min-height: 90vh;
+        }
+        .hero__content { position: relative; z-index: 2; }
+        .hero__pretitle {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.78rem; font-weight: 600; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--coral); margin-bottom: 16px;
+            background: var(--coral-pale); padding: 6px 16px; border-radius: 50px;
+        }
+        .hero__title {
+            font-family: var(--font-display); font-size: clamp(2.6rem, 5.5vw, 3.9rem);
+            font-weight: 600; line-height: 1.15; color: var(--teal-deep);
+            letter-spacing: -1px; margin-bottom: 20px;
+        }
+        .hero__title em { font-style: italic; color: var(--coral); }
+        .hero__subtitle {
+            font-size: 1.1rem; color: var(--charcoal-light); line-height: 1.7;
+            max-width: 460px; margin-bottom: 32px;
+        }
+        .hero__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 30px; border-radius: 50px; font-weight: 600;
+            font-size: 0.95rem; letter-spacing: 0.3px; cursor: pointer;
+            border: none; text-decoration: none; transition: all var(--transition-smooth);
+            white-space: nowrap;
+        }
+        .btn--primary {
+            background: var(--coral); color: #fff;
+            box-shadow: 0 4px 14px rgba(224,124,90,0.3);
+        }
+        .btn--primary:hover { background: #c96948; box-shadow: 0 8px 24px rgba(224,124,90,0.45); transform: translateY(-2px); }
+        .btn--primary:active { transform: scale(0.96); }
+        .btn--outline {
+            background: transparent; color: var(--teal-deep);
+            border: 1.5px solid var(--stone);
+        }
+        .btn--outline:hover { border-color: var(--teal-deep); background: rgba(13,59,76,0.03); transform: translateY(-1px); }
+
+        /* Heartbeat Animation in Hero Visual */
+        .hero__visual {
+            position: relative; z-index: 2; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .heartbeat-container {
+            width: 280px; height: 280px; position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .heartbeat-circle {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: linear-gradient(135deg, #e1f0f2 0%, #cde5e8 100%);
+            box-shadow: var(--shadow-lg); position: relative;
+        }
+        .heart-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 4.5rem; animation: heartbeat 1.4s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(224,124,90,0.2));
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            14% { transform: translate(-50%, -50%) scale(1.1); }
+            28% { transform: translate(-50%, -50%) scale(1); }
+            42% { transform: translate(-50%, -50%) scale(1.1); }
+            56% { transform: translate(-50%, -50%) scale(1); }
+        }
+        .pulse-ring {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 2px solid rgba(224,124,90,0.25);
+            animation: pulse-ring 2.5s ease-out infinite;
+        }
+        .pulse-ring:nth-child(2) { animation-delay: 0.8s; }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Sections */
+        .section {
+            position: relative; z-index: 1; padding: 90px 32px;
+            max-width: 1280px; margin: 0 auto;
+        }
+        .section__label {
+            font-size: 0.78rem; font-weight: 600; letter-spacing: 2.5px;
+            text-transform: uppercase; color: var(--coral); margin-bottom: 10px;
+        }
+        .section__title {
+            font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: 600; color: var(--teal-deep); letter-spacing: -0.5px;
+            line-height: 1.2; margin-bottom: 16px;
+        }
+        .section__text {
+            color: var(--charcoal-light); font-size: 1rem; line-height: 1.7;
+            max-width: 600px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+            margin-top: 40px;
+        }
+        .stat-card {
+            background: var(--white); border-radius: var(--radius-md);
+            padding: 28px 20px; text-align: center; box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.03); transition: all var(--transition-smooth);
+        }
+        .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+        .stat-card__number {
+            font-family: var(--font-display); font-size: 2.8rem; font-weight: 700;
+            color: var(--teal-deep); letter-spacing: -0.5px; line-height: 1.1;
+        }
+        .stat-card__label { font-size: 0.85rem; color: var(--charcoal-light); margin-top: 8px; font-weight: 500; }
+
+        /* Programs */
+        .programs-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+            margin-top: 40px;
+        }
+        .program-card {
+            background: var(--white); border-radius: var(--radius-lg);
+            padding: 32px 28px; box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.03); transition: all var(--transition-smooth);
+        }
+        .program-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: rgba(224,124,90,0.2); }
+        .program-card__icon {
+            width: 52px; height: 52px; border-radius: var(--radius-sm);
+            background: var(--coral-pale); display: flex; align-items: center;
+            justify-content: center; font-size: 1.6rem; margin-bottom: 18px;
+        }
+        .program-card__title {
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 600;
+            color: var(--teal-deep); margin-bottom: 8px;
+        }
+        .program-card__desc { font-size: 0.9rem; color: var(--charcoal-light); line-height: 1.6; }
+
+        /* Donation Section */
+        .donation-grid {
+            background: var(--white); border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.04);
+            overflow: hidden; display: grid; grid-template-columns: 1fr 1fr;
+            margin-top: 30px;
+        }
+        .donation-form {
+            padding: 40px; display: flex; flex-direction: column; gap: 20px;
+        }
+        .donation-toggle {
+            display: flex; background: var(--cream-warm); border-radius: 50px;
+            padding: 4px; gap: 4px; align-self: flex-start;
+        }
+        .toggle-option {
+            padding: 10px 22px; border-radius: 50px; font-size: 0.9rem;
+            font-weight: 600; cursor: pointer; border: none; background: transparent;
+            color: var(--charcoal-light); transition: all var(--transition-smooth);
+            letter-spacing: 0.3px;
+        }
+        .toggle-option--active { background: var(--white); color: var(--teal-deep); box-shadow: var(--shadow-sm); }
+        .amount-options {
+            display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+        }
+        .amount-btn {
+            padding: 15px 12px; border-radius: var(--radius-md);
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            border: 2px solid var(--stone); background: var(--white);
+            color: var(--charcoal); transition: all var(--transition-smooth);
+        }
+        .amount-btn:hover { border-color: var(--coral-light); background: var(--coral-pale); }
+        .amount-btn--selected {
+            border-color: var(--coral); background: var(--coral-pale);
+            color: var(--teal-deep); box-shadow: 0 0 0 3px rgba(224,124,90,0.15);
+            transform: scale(1.03);
+        }
+        .custom-amount {
+            display: flex; align-items: center; border: 2px solid var(--stone);
+            border-radius: var(--radius-md); overflow: hidden; transition: border-color var(--transition-fast);
+        }
+        .custom-amount:focus-within { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(224,124,90,0.1); }
+        .custom-amount span {
+            padding: 14px 0 14px 16px; font-weight: 600; color: var(--charcoal-light);
+            font-size: 1rem; background: var(--cream-warm);
+        }
+        .custom-amount input {
+            flex: 1; padding: 14px 16px; border: none; font-size: 1rem;
+            background: var(--white); outline: none; font-family: var(--font-body);
+        }
+        .impact-note {
+            background: #f2f7f8; padding: 14px 18px; border-radius: var(--radius-md);
+            font-size: 0.9rem; color: var(--teal-mid); display: flex; align-items: flex-start; gap: 12px;
+        }
+        .donate-submit {
+            width: 100%; padding: 16px; background: var(--coral); color: #fff;
+            border: none; border-radius: 50px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: all var(--transition-smooth);
+            box-shadow: 0 4px 14px rgba(224,124,90,0.3);
+        }
+        .donate-submit:hover { background: #c96948; box-shadow: 0 8px 24px rgba(224,124,90,0.45); transform: translateY(-1px); }
+        .donate-submit:active { transform: scale(0.97); }
+        .donate-submit--thankyou { background: #2e7d8a !important; pointer-events: none; }
+
+        /* Sidebar */
+        .donation-sidebar {
+            background: linear-gradient(165deg, #0d3b4c 0%, #1b5a6b 70%);
+            padding: 40px; color: #fff; display: flex; flex-direction: column;
+            justify-content: center; gap: 18px;
+        }
+        .goal-label { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+        .goal-amount { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--coral); border-radius: 10px; transition: width 1.2s ease; }
+        .sidebar-stats { display: flex; gap: 28px; font-size: 0.85rem; opacity: 0.9; }
+        .sidebar-stats strong { display: block; font-size: 1.3rem; font-weight: 700; }
+
+        /* Testimonials */
+        .testimonial-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            margin-top: 30px;
+        }
+        .testimonial-card {
+            background: var(--white); border-radius: var(--radius-lg);
+            padding: 28px; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);
+            transition: all var(--transition-smooth);
+        }
+        .testimonial-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .testimonial-card__stars { color: var(--coral); font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 8px; }
+        .testimonial-card__quote {
+            font-family: var(--font-display); font-size: 1.2rem; font-style: italic;
+            color: var(--teal-deep); line-height: 1.5; margin-bottom: 14px;
+        }
+        .testimonial-card__author { font-size: 0.85rem; font-weight: 600; color: var(--charcoal); }
+        .testimonial-card__author span { display: block; font-weight: 400; color: var(--charcoal-light); font-size: 0.8rem; margin-top: 3px; }
+
+        /* FAQ */
+        .faq-list { display: flex; flex-direction: column; gap: 8px; margin-top: 30px; max-width: 750px; }
+        .faq-item {
+            border: 1px solid rgba(0,0,0,0.05); border-radius: var(--radius-md);
+            background: var(--white); overflow: hidden;
+        }
+        .faq-item--open { box-shadow: var(--shadow-md); border-color: rgba(224,124,90,0.25); }
+        .faq-question {
+            width: 100%; padding: 18px 22px; text-align: left; background: none;
+            border: none; font-size: 0.95rem; font-weight: 600; color: var(--charcoal);
+            cursor: pointer; display: flex; justify-content: space-between;
+            align-items: center; font-family: var(--font-body);
+        }
+        .faq-icon {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+            background: var(--cream-warm); display: flex; align-items: center;
+            justify-content: center; font-size: 0.7rem; transition: transform var(--transition-smooth);
+        }
+        .faq-item--open .faq-icon { transform: rotate(45deg); background: var(--coral-pale); color: var(--coral); }
+        .faq-answer {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 22px; font-size: 0.9rem; color: var(--charcoal-light); line-height: 1.6;
+        }
+        .faq-item--open .faq-answer { max-height: 200px; padding: 0 22px 18px; }
+
+        /* Footer */
+        .footer {
+            background: var(--teal-deep); color: rgba(255,255,255,0.8);
+            padding: 60px 32px 30px; position: relative; z-index: 1;
+        }
+        .footer__inner {
+            max-width: 1280px; margin: 0 auto; display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px;
+        }
+        .footer__brand { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: #fff; }
+        .footer__desc { font-size: 0.85rem; line-height: 1.6; opacity: 0.7; max-width: 260px; margin-top: 8px; }
+        .footer__col-title { font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; margin-bottom: 14px; }
+        .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer__links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; }
+        .footer__links a:hover { color: #fff; }
+        .footer__news { display: flex; gap: 8px; margin-top: 8px; }
+        .footer__news input {
+            flex: 1; padding: 11px 16px; border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);
+            color: #fff; font-size: 0.88rem; outline: none;
+        }
+        .footer__news input::placeholder { color: rgba(255,255,255,0.4); }
+        .footer__news button {
+            padding: 11px 20px; border-radius: 50px; background: var(--coral);
+            color: #fff; border: none; font-weight: 600; cursor: pointer;
+        }
+        .footer__bottom {
+            max-width: 1280px; margin: 40px auto 0; padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1); display: flex;
+            justify-content: space-between; font-size: 0.8rem; opacity: 0.5;
+        }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed; bottom: 30px; right: 30px; z-index: 99;
+            width: 44px; height: 44px; border-radius: 50%; background: var(--white);
+            border: 1px solid rgba(0,0,0,0.08); box-shadow: var(--shadow-md);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; opacity: 0; pointer-events: none; transform: translateY(10px);
+            transition: all var(--transition-smooth);
+        }
+        .scroll-top--visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .scroll-top:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+
+        /* Reveal */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal--visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; gap: 40px; min-height: auto; padding: 100px 24px 60px; }
+            .hero__visual { order: -1; }
+            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .programs-grid { grid-template-columns: 1fr 1fr; }
+            .donation-grid { grid-template-columns: 1fr; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+            .nav__links { display: none; }
+            .nav__hamburger { display: flex; }
+            .nav__cta-desktop { display: none; }
+        }
+
+        @media (max-width: 640px) {
+            .section { padding: 50px 18px; }
+            .hero { padding: 90px 18px 40px; }
+            .hero__title { font-size: 2.2rem; }
+            .hero__actions { flex-direction: column; }
+            .btn { justify-content: center; width: 100%; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card__number { font-size: 2rem; }
+            .programs-grid { grid-template-columns: 1fr; }
+            .amount-options { grid-template-columns: repeat(3,1fr); gap: 8px; }
+            .amount-btn { padding: 12px 8px; font-size: 0.9rem; }
+            .footer__inner { grid-template-columns: 1fr; }
+            .donation-form { padding: 24px 18px; }
+            .donation-toggle { align-self: stretch; }
+            .toggle-option { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape bg-shape--1"></div>
+    <div class="bg-shape bg-shape--2"></div>
+    <div class="bg-shape bg-shape--3"></div>
+
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <a href="#" class="nav__logo">
+                <span class="nav__logo-icon">❤</span> HopeWell
+            </a>
+            <ul class="nav__links">
+                <li><a href="#work" class="nav__link">What We Do</a></li>
+                <li><a href="#programs" class="nav__link">Programs</a></li>
+                <li><a href="#donate" class="nav__link">Donate</a></li>
+                <li><a href="#stories" class="nav__link">Stories</a></li>
+                <li><a href="#donate" class="nav__cta nav__cta-desktop">Give Now</a></li>
+            </ul>
+            <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#work" class="mobile-menu__link">What We Do</a>
+        <a href="#programs" class="mobile-menu__link">Programs</a>
+        <a href="#donate" class="mobile-menu__link">Donate</a>
+        <a href="#stories" class="mobile-menu__link">Stories</a>
+        <a href="#faq" class="mobile-menu__link">FAQ</a>
+        <a href="#donate" class="mobile-menu__cta">Make a Donation</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero__content reveal">
+            <span class="hero__pretitle">❤ HopeWell Foundation</span>
+            <h1 class="hero__title">Because <em>every patient</em> deserves a fighting chance.</h1>
+            <p class="hero__subtitle">
+                We bridge the gap between illness and hope — covering treatment costs, lodging, and emotional support for families facing medical crisis.
+            </p>
+            <div class="hero__actions">
+                <a href="#donate" class="btn btn--primary">Donate Now →</a>
+                <a href="#programs" class="btn btn--outline">Our Impact</a>
+            </div>
+        </div>
+        <div class="hero__visual reveal reveal--delay-2">
+            <div class="heartbeat-container">
+                <div class="heartbeat-circle"></div>
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="heart-icon">💗</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="work">
+        <span class="section__label reveal">Our Mission</span>
+        <h2 class="section__title reveal reveal--delay-1">Healing happens when barriers are removed.</h2>
+        <p class="section__text reveal reveal--delay-1">
+            From chemotherapy copays to travel costs for specialized surgery, we step in so families can focus on what matters: getting better. In 2025, we assisted over 9,200 patients across the country.
+        </p>
+        <div class="stats-grid">
+            <div class="stat-card reveal">
+                <div class="stat-card__number" data-count="9200">0</div>
+                <div class="stat-card__label">Patients Supported</div>
+            </div>
+            <div class="stat-card reveal reveal--delay-1">
+                <div class="stat-card__number" data-count="165">0</div>
+                <div class="stat-card__label">Hospitals Partnered</div>
+            </div>
+            <div class="stat-card reveal reveal--delay-2">
+                <div class="stat-card__number" data-count="87">0</div>
+                <div class="stat-card__label">Cents Per Dollar to Programs</div>
+            </div>
+            <div class="stat-card reveal reveal--delay-3">
+                <div class="stat-card__number" data-count="42">0</div>
+                <div class="stat-card__label">States Served</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="programs">
+        <span class="section__label reveal">Core Programs</span>
+        <h2 class="section__title reveal reveal--delay-1">Where your kindness meets critical need.</h2>
+        <div class="programs-grid">
+            <div class="program-card reveal">
+                <div class="program-card__icon">💊</div>
+                <h3 class="program-card__title">Treatment Grants</h3>
+                <p class="program-card__desc">Direct financial aid for chemo, radiation, surgeries, and specialty medications. $500 covers a month of life-saving insulin for an uninsured patient.</p>
+            </div>
+            <div class="program-card reveal reveal--delay-1">
+                <div class="program-card__icon">🏠</div>
+                <h3 class="program-card__title">Hope Lodges</h3>
+                <p class="program-card__desc">Free housing near treatment centers for families traveling far from home. Over 340 families stayed with us last year, steps away from their child's hospital.</p>
+            </div>
+            <div class="program-card reveal reveal--delay-2">
+                <div class="program-card__icon">🧸</div>
+                <h3 class="program-card__title">Emotional Care</h3>
+                <p class="program-card__desc">Counseling, support groups, and activity kits for children battling long-term illness. A $100 donation sponsors a month of therapy for a young patient.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="donate">
+        <span class="section__label reveal">Give Now</span>
+        <h2 class="section__title reveal reveal--delay-1">Your gift changes a medical outcome.</h2>
+        <div class="donation-grid">
+            <div class="donation-form" id="donationForm">
+                <div class="donation-toggle">
+                    <button class="toggle-option toggle-option--active" data-freq="once">One-Time</button>
+                    <button class="toggle-option" data-freq="monthly">Monthly</button>
+                </div>
+                <div class="amount-options" id="amountContainer">
+                    <button class="amount-btn amount-btn--selected" data-amount="50">$50</button>
+                    <button class="amount-btn" data-amount="100">$100</button>
+                    <button class="amount-btn" data-amount="250">$250</button>
+                    <button class="amount-btn" data-amount="500">$500</button>
+                    <button class="amount-btn" data-amount="1000">$1000</button>
+                    <button class="amount-btn" data-amount="custom" id="customTrigger">Other</button>
+                </div>
+                <div class="custom-amount" id="customInput" style="display:none;">
+                    <span>$</span>
+                    <input type="number" placeholder="Enter amount" min="1" id="customAmount">
+                </div>
+                <div class="impact-note" id="impactMessage">
+                    <span>💡</span> <span id="impactText">$50 provides a week of nutritious meals for a family staying at a Hope Lodge.</span>
+                </div>
+                <button class="donate-submit" id="donateBtn">Donate $50</button>
+                <p style="font-size:0.75rem;color:var(--charcoal-light);text-align:center;">🔒 Secure & encrypted · Tax receipt instantly</p>
+            </div>
+            <div class="donation-sidebar">
+                <span class="goal-label">Winter Campaign</span>
+                <span class="goal-amount">$68,420 <span style="font-size:1rem;opacity:0.7;">of $100,000</span></span>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+                <div class="sidebar-stats">
+                    <div><strong>1,902</strong> donors</div>
+                    <div><strong>12</strong> days left</div>
+                </div>
+                <p style="font-size:0.82rem;opacity:0.75;">Funds 200 treatment grants for children with rare diseases this winter.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="stories">
+        <span class="section__label reveal">Real Stories</span>
+        <h2 class="section__title reveal reveal--delay-1">Lives touched by your generosity.</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__quote">"HopeWell covered our travel and housing when my daughter needed a bone marrow transplant 800 miles from home. We couldn't have afforded it otherwise."</p>
+                <div class="testimonial-card__author">Jamie L.<span>Mother of transplant survivor</span></div>
+            </div>
+            <div class="testimonial-card reveal reveal--delay-1">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__quote">"The treatment grant meant I didn't have to choose between rent and chemotherapy. I'm in remission now, and I owe so much to this community."</p>
+                <div class="testimonial-card__author">Derek M.<span>Cancer survivor</span></div>
+            </div>
+            <div class="testimonial-card reveal reveal--delay-2">
+                <p class="testimonial-card__quote">"As a social worker, I refer families to HopeWell constantly. They respond within 24 hours, and the relief on a parent's face is something I'll never forget."</p>
+                <div class="testimonial-card__author">Maria S.<span>Pediatric oncology social worker</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="faq">
+        <span class="section__label reveal">FAQ</span>
+        <h2 class="section__title reveal reveal--delay-1">Common questions.</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question">Where does my money go? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">87 cents of every dollar directly funds patient programs. The rest covers fundraising and essential operations. We publish quarterly impact reports.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Is my donation tax-deductible? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">Yes, HopeWell is a 501(c)(3) nonprofit. You'll receive an instant receipt and a year-end summary for all donations over $250.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Can I direct my gift to a specific program? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">Absolutely. After donating, you'll receive a link to designate your gift toward treatment grants, Hope Lodges, or emotional care.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">How are patients chosen? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">We work with hospital social workers who identify families facing financial hardship. Priority goes to those with urgent medical needs and limited insurance coverage.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div>
+                <div class="footer__brand">HopeWell Foundation</div>
+                <p class="footer__desc">Removing barriers to healing for families across America since 2017.</p>
+            </div>
+            <div>
+                <div class="footer__col-title">Navigate</div>
+                <ul class="footer__links">
+                    <li><a href="#work">What We Do</a></li>
+                    <li><a href="#programs">Programs</a></li>
+                    <li><a href="#donate">Donate</a></li>
+                    <li><a href="#stories">Stories</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer__col-title">Contact</div>
+                <ul class="footer__links">
+                    <li><a href="#">hello@hopewell.org</a></li>
+                    <li><a href="#">Annual Report</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer__col-title">Stay Close</div>
+                <p style="font-size:0.85rem;opacity:0.7;">Patient stories and impact updates.</p>
+                <div class="footer__news">
+                    <input type="email" placeholder="Your email" aria-label="Newsletter signup">
+                    <button>Sign Up</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <span>© 2026 HopeWell Foundation. All rights reserved.</span>
+            <span>EIN: 84-9876543</span>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Back to top">↑</button>
+
+    <script>
+        (() => {
+            const navbar = document.getElementById('navbar');
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const scrollTopBtn = document.getElementById('scrollTop');
+            const amountBtns = document.querySelectorAll('.amount-btn');
+            const customTrigger = document.getElementById('customTrigger');
+            const customInput = document.getElementById('customInput');
+            const customAmountInput = document.getElementById('customAmount');
+            const impactText = document.getElementById('impactText');
+            const donateBtn = document.getElementById('donateBtn');
+            const progressFill = document.getElementById('progressFill');
+            const toggleOptions = document.querySelectorAll('.toggle-option');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const revealEls = document.querySelectorAll('.reveal');
+            const countEls = document.querySelectorAll('[data-count]');
+
+            let selectedAmount = 50;
+            let frequency = 'once';
+            let counted = false;
+
+            const impactMessages = {
+                50: '$50 provides a week of nutritious meals for a family staying at a Hope Lodge.',
+                100: '$100 sponsors a month of therapy for a young patient.',
+                250: '$250 covers a round-trip medical flight for a child in need.',
+                500: '$500 funds a month of insulin for an uninsured patient.',
+                1000: '$1000 supports an entire family\'s lodging during treatment.',
+                custom: 'Your gift directly removes a barrier to healing — thank you.'
+            };
+
+            function updateNav() {
+                navbar.classList.toggle('nav--scrolled', window.scrollY > 60);
+                scrollTopBtn.classList.toggle('scroll-top--visible', window.scrollY > 700);
+            }
+            window.addEventListener('scroll', updateNav, { passive: true });
+            updateNav();
+
+            function toggleMenu(open) {
+                mobileMenu.classList.toggle('mobile-menu--open', open);
+                hamburger.classList.toggle('nav__hamburger--active', open);
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+            hamburger.addEventListener('click', () => toggleMenu(!mobileMenu.classList.contains('mobile-menu--open')));
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+            scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('reveal--visible'); observer.unobserve(entry.target); }});
+            }, { threshold: 0.15 });
+            revealEls.forEach(el => observer.observe(el));
+
+            const counterObs = new IntersectionObserver(entries => {
+                if(entries[0].isIntersecting && !counted) {
+                    counted = true;
+                    countEls.forEach(el => {
+                        const target = parseInt(el.getAttribute('data-count'), 10);
+                        if(isNaN(target)) return;
+                        const duration = 1600, start = performance.now();
+                        function tick(now) {
+                            const progress = Math.min((now - start) / duration, 1);
+                            const eased = 1 - Math.pow(1-progress, 3);
+                            el.textContent = target > 100 ? Math.round(eased*target).toLocaleString() + '+' : Math.round(eased*target);
+                            if(progress < 1) requestAnimationFrame(tick);
+                            else el.textContent = target > 100 ? target.toLocaleString()+'+' : target;
+                        }
+                        requestAnimationFrame(tick);
+                    });
+                    counterObs.unobserve(entries[0].target);
+                }
+            }, { threshold: 0.5 });
+            if(countEls.length) counterObs.observe(countEls[0]);
+
+            new IntersectionObserver(entries => {
+                if(entries[0].isIntersecting) { setTimeout(() => progressFill.style.width = '68.4%', 300); }
+            }, { threshold: 0.3 }).observe(progressFill);
+
+            function updateDonation(amount, isCustom = false) {
+                selectedAmount = isCustom ? 'custom' : amount;
+                amountBtns.forEach(b => {
+                    const val = b.getAttribute('data-amount');
+                    b.classList.toggle('amount-btn--selected', (isCustom && val==='custom') || (!isCustom && parseInt(val)===amount));
+                });
+                impactText.textContent = impactMessages[isCustom ? 'custom' : amount] || impactMessages.custom;
+                const display = isCustom ? (customAmountInput.value || '') : amount;
+                donateBtn.textContent = display ? `Donate $${display}${frequency==='monthly'?'/mo':''}` : 'Enter amount';
+                donateBtn.classList.remove('donate-submit--thankyou');
+            }
+
+            amountBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const amt = btn.getAttribute('data-amount');
+                    if(amt === 'custom') {
+                        customInput.style.display = 'flex';
+                        updateDonation(null, true);
+                        customAmountInput.focus();
+                    } else {
+                        customInput.style.display = 'none';
+                        customAmountInput.value = '';
+                        updateDonation(parseInt(amt));
+                    }
+                });
+            });
+
+            customAmountInput.addEventListener('input', () => {
+                const val = customAmountInput.value;
+                if(val && parseInt(val)>0) {
+                    updateDonation(parseInt(val), true);
+                    donateBtn.textContent = `Donate $${val}${frequency==='monthly'?'/mo':''}`;
+                } else {
+                    donateBtn.textContent = 'Enter amount';
+                }
+            });
+
+            toggleOptions.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    toggleOptions.forEach(o => o.classList.remove('toggle-option--active'));
+                    opt.classList.add('toggle-option--active');
+                    frequency = opt.getAttribute('data-freq');
+                    const display = selectedAmount==='custom' ? (customAmountInput.value||'') : selectedAmount;
+                    donateBtn.textContent = display ? `Donate $${display}${frequency==='monthly'?'/mo':''}` : 'Enter amount';
+                });
+            });
+
+            donateBtn.addEventListener('click', () => {
+                if(selectedAmount==='custom' && (!customAmountInput.value || parseInt(customAmountInput.value)<=0)) {
+                    customAmountInput.style.borderColor = 'var(--error)';
+                    setTimeout(() => customAmountInput.style.borderColor = '', 1500);
+                    return;
+                }
+                donateBtn.textContent = '✓ Thank You!';
+                donateBtn.classList.add('donate-submit--thankyou');
+                setTimeout(() => {
+                    donateBtn.classList.remove('donate-submit--thankyou');
+                    const display = selectedAmount==='custom' ? (customAmountInput.value||'') : selectedAmount;
+                    donateBtn.textContent = display ? `Donate $${display}${frequency==='monthly'?'/mo':''}` : 'Enter amount';
+                }, 3000);
+            });
+
+            faqItems.forEach(item => {
+                const q = item.querySelector('.faq-question');
+                q.addEventListener('click', () => {
+                    const wasOpen = item.classList.contains('faq-item--open');
+                    faqItems.forEach(i => i.classList.remove('faq-item--open'));
+                    if(!wasOpen) item.classList.add('faq-item--open');
+                });
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) {
+                        e.preventDefault();
+                        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
